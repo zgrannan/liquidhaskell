@@ -22,10 +22,12 @@ f False = Z
 myProof :: Bool -> Bool -> ()
 myProof x y = ()
 
+-- Works if g is defined as "and f y"
 {-@ inline g @-}
 g :: Bool -> Bool -> Bool
 g x y = x && y
 
+-- Works if proved directly
 {-@ rewriteWith mp [myProof] @-}
 {-@ mp ::
         x : Bool
