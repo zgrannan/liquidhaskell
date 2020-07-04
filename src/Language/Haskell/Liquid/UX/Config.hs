@@ -96,6 +96,7 @@ data Config = Config
   , maxMatchDepth   :: Int
   , maxAppDepth     :: Int
   , maxArgsDepth    :: Int
+  , maxRWOrderingConstraints :: Maybe Int
   } deriving (Generic, Data, Typeable, Show, Eq)
 
 instance Serialize SMTSolver

@@ -380,6 +380,10 @@ config = cmdArgsMode $ Config {
   , maxArgsDepth
     = def 
         &= name "max-args-depth"
+  ,
+    maxRWOrderingConstraints
+    = def
+        &= name "max-rw-ordering-constraints"
   } &= verbosity
     &= program "liquid"
     &= help    "Refinement Types for Haskell"
@@ -619,6 +623,7 @@ defConfig = Config
   , maxMatchDepth     = 4
   , maxAppDepth       = 2
   , maxArgsDepth      = 1
+  , maxRWOrderingConstraints = Nothing
   }
 
 ------------------------------------------------------------------------

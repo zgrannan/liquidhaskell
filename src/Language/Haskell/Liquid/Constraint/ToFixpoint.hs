@@ -57,6 +57,7 @@ fixConfig tgt cfg = def
   , FC.etaElim          = not (exactDC cfg) && extensionality cfg -- SEE: https://github.com/ucsd-progsys/liquidhaskell/issues/1601
   , FC.extensionality   = extensionality    cfg 
   , FC.oldPLE           = oldPLE cfg
+  , FC.maxRWOrderingConstraints = maxRWOrderingConstraints cfg
   }
 
 
