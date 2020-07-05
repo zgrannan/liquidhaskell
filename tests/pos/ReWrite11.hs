@@ -1,6 +1,7 @@
+{-@ LIQUID "--max-rw-ordering-constraints=0" @-}
 {-@ LIQUID "--reflection" @-}
 {-@ LIQUID "--ple" @-}
-{-@ LIQUID "--smttimeout=10" @-}
+-- {-@ LIQUID "--smttimeout=10" @-}
 
 module Rewrite11 where
 

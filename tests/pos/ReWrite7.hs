@@ -1,6 +1,7 @@
 -- A more challenging example
 {-# LANGUAGE Rank2Types #-}
 
+{-@ LIQUID "--max-rw-ordering-constraints=2" @-}
 {-@ LIQUID "--extensionality" @-}
 {-@ LIQUID "--reflection" @-}
 {-@ LIQUID "--ple" @-}
