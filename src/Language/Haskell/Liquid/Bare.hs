@@ -533,6 +533,7 @@ makeSpecRefl cfg src menv specs env name sig tycEnv = SpRefl
   , gsWiredReft  = wReflects
   , gsRewrites   = makeRewrite env name mySpec
   , gsRewritesWith = makeRewriteWith env name mySpec
+  , gsShowProofs = makeShowProofs env name mySpec
   }
   where
     wReflects    = Bare.wiredReflects cfg env name sig
@@ -586,6 +587,9 @@ addReflSigs env name rtEnv refl sig =
 
 makeAutoInst :: Bare.Env -> ModName -> Ms.BareSpec -> M.HashMap Ghc.Var (Maybe Int)
 makeAutoInst env name spec = Misc.hashMapMapKeys (Bare.lookupGhcVar env name "Var") (Ms.autois spec)
+
+makeShowProofs :: Bare.Env -> ModName -> Ms.BareSpec -> S.HashSet Ghc.Var
+makeShowProofs env name spec = S.map (Bare.lookupGhcVar env name "Var") (Ms.showProofs spec)
 
 ----------------------------------------------------------------------------------------
 makeSpecSig :: Config -> ModName -> Bare.ModSpecs -> Bare.Env -> Bare.SigEnv -> Bare.TycEnv -> Bare.MeasEnv -> [Ghc.CoreBind]

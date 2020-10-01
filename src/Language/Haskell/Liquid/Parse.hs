@@ -874,6 +874,7 @@ data Pspec ty ctor
   | Varia   (LocSymbol, [Variance])                       -- ^ 'variance' annotations, marking type constructor params as co-, contra-, or in-variant
   | BFix    ()                                            -- ^ fixity annotation
   | Define  (LocSymbol, Symbol)                           -- ^ 'define' annotation for specifying aliases c.f. `include-CoreToLogic.lg`
+  | ShowProof LocSymbol
   deriving (Data, Show, Typeable)
 
 instance (PPrint ty, PPrint ctor) => PPrint (Pspec ty ctor) where 
@@ -1081,6 +1082,7 @@ mkSpec name xs         = (name,) $ qualifySpec (symbol name) Measure.Spec
   , Measure.hbounds    = S.fromList [s | HBound s <- xs]
   , Measure.defs       = M.fromList [d | Define d <- xs]
   , Measure.axeqs      = []
+  , Measure.showProofs = S.fromList [s | ShowProof s <- xs]
   }
 
 -- | Parse a single top level liquid specification
@@ -1144,6 +1146,7 @@ specP
     <|> (reserved "automatic-instances" >> liftM Insts autoinstP  )
     <|> (reserved "LIQUID"        >> liftM Pragma pragmaP   )
     <|> (reserved "liquid"        >> liftM Pragma pragmaP   )
+    <|> (reserved "showProof"     >> liftM ShowProof showProofP)
     <|> {- DEFAULT -}                liftM Asrts  tyBindsP
     <?> "specP"
 
@@ -1173,6 +1176,8 @@ autoinstP = do x <- locBinderP
 lazyVarP :: Parser LocSymbol
 lazyVarP = locBinderP
 
+showProofP :: Parser LocSymbol
+showProofP = locBinderP
 
 rewriteVarP :: Parser LocSymbol
 rewriteVarP = locBinderP

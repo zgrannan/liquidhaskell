@@ -90,6 +90,7 @@ makeAxiomEnvironment info xts fcs
            (concatMap makeSimplify xts)
            (doExpand sp cfg <$> fcs)
            (makeRewrites info <$> fcs)
+           (S.fromList (M.keys (M.filter (isShowProofVar . subVar) fcs)))
   where
     eqs      = if (oldPLE cfg) 
                 then (makeEquations sp ++ map (uncurry $ specTypeEq emb) xts)
@@ -99,6 +100,8 @@ makeAxiomEnvironment info xts fcs
     sp       = giSpec     info
     axioms   = gsMyAxioms refl ++ gsImpAxioms refl 
     refl     = gsRefl sp
+    isShowProofVar Nothing  = False
+    isShowProofVar (Just v) = S.member v (gsShowProofs refl)
 
 
 makeRewrites :: TargetInfo -> F.SubC Cinfo -> [F.AutoRewrite]

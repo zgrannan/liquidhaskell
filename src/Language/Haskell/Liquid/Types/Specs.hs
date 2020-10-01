@@ -262,6 +262,7 @@ data GhcSpecRefl = SpRefl
   , gsWiredReft    :: ![Var]
   , gsRewrites     :: S.HashSet (F.Located Var)
   , gsRewritesWith :: M.HashMap Var [Var]
+  , gsShowProofs   :: S.HashSet Var
   }
 
 data GhcSpecLaws = SpLaws 
@@ -344,6 +345,7 @@ data Spec ty bndr  = Spec
   , defs       :: !(M.HashMap F.LocSymbol F.Symbol)    -- ^ Temporary (?) hack to deal with dictionaries in specifications
                                                        --   see tests/pos/NatClass.hs
   , axeqs      :: ![F.Equation]                        -- ^ Equalities used for Proof-By-Evaluation
+  , showProofs :: (S.HashSet F.LocSymbol)              -- Proofs to generate
   } deriving (Generic, Show)
 
 instance Binary (Spec LocBareType F.LocSymbol)
@@ -397,6 +399,7 @@ instance Semigroup (Spec ty bndr) where
            , bounds     = M.union   (bounds   s1)  (bounds   s2)
            , defs       = M.union   (defs     s1)  (defs     s2)
            , autois     = M.union   (autois s1)      (autois s2)
+           , showProofs = S.union   (showProofs s1)  (showProofs s2)
            }
 
 instance Monoid (Spec ty bndr) where
@@ -444,6 +447,7 @@ instance Monoid (Spec ty bndr) where
            , axeqs      = []
            , bounds     = M.empty
            , defs       = M.empty
+           , showProofs = S.empty
            }
 
 -- $liftedSpec
@@ -756,4 +760,5 @@ unsafeFromLiftedSpec a = Spec
   , bounds     = liftedBounds a
   , defs       = liftedDefs a
   , axeqs      = S.toList . liftedAxeqs $ a
+  , showProofs = mempty
   }
