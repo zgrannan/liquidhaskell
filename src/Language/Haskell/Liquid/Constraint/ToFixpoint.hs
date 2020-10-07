@@ -141,7 +141,8 @@ refinementEQs :: LocSpecType -> [(F.Expr, F.Expr)]
 refinementEQs t =
   case stripRTypeBase tres of
     Just r ->
-      [ (lhs, rhs) | (F.EEq lhs rhs) <- F.splitPAnd $ F.reftPred (F.toReft r) ]
+      [ (lhs, rhs) | (F.EEq lhs rhs) <- F.splitPAnd $ F.reftPred (F.toReft r) ] ++
+      [ (lhs, rhs) | (F.PIff lhs rhs) <- F.splitPAnd $ F.reftPred (F.toReft r) ]
     Nothing ->
       []
   where
